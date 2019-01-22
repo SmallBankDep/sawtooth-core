@@ -79,7 +79,6 @@ class SmallBankDependentTxns(Transaction):
         print(address_list)
         txn = self.factory.create_payload(address_list,acc,deps)
         return txn
-        
     
     def _create_deposit_checking(self,cust_id,amount,deps=None):
         acc = self.factory.deposit_checking(cust_id,amount)
@@ -88,7 +87,30 @@ class SmallBankDependentTxns(Transaction):
         txn = self.factory.create_payload(address,acc,deps)
         return txn
     
-
+    def _create_write_check(self,cust_id,amount,deps=None):
+        acc = self.factory.write_check(cust_id,amount)
+        print(acc)
+        address=[self._calculate_address(cust_id)]
+        txn = self.factory.create_payload(address,acc,deps)
+        return txn
+    
+    def _create_transact_savings(self,cust_id,amount,deps=None):
+        acc = self.factory.transact_saving(cust_id,amount)
+        print(acc)
+        address=[self._calculate_address(cust_id)]
+        txn = self.factory.create_payload(address,acc,deps)
+        return txn
+    
+    def _amalgamate_accounts(self,source_cust_id, dest_cust_id,deps=None):
+        acc = self.factory.amalgamate_accounts(source_cust_id,dest_cust_id)
+        print(acc)
+        address1=self._calculate_address(source_cust_id)
+        address2=self._calculate_address(dest_cust_id)
+        address_list=[address1,address2]
+        print(address_list)
+        txn = self.factory.create_payload(address_list,acc,deps)
+        return txn
+    
 class SupplyChainDependentTxns(Transaction):
     def __init__(self):
         signer = self.get_signer()
